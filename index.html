@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+  <head>
+    <meta charset='utf-8'>
+    <title></title>
+    <link rel='stylesheet' href='styles.css'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id='videoHolder'>
+    </div>
+    <canvas class='mainVideo' id="canvas" width="800" height="450"></canvas>
+    <div id='vidbar'>
+      <div id='layer' class='layer'>
+        <button class='b1' id='layer-delete'>Delete Video</button>
+        <h4 class='layertext' id='layer-title'>video name.mp4</h4>
+      </div>
+    </div>
+    <div id='controls'>
+      <button class='b2' onclick="playAll()">Play</button>
+      <button class='b2' onclick="pauseAll()">Pause</button>
+    </div>
+    <div id='settings'>
+    </div>
+    <script src='Layer.js' charset='utf-8'></script>
+    <script src='VideoTile.js' charset='utf-8'></script>
+    <script src='loadVideo.js' charset='utf-8'></script>
+    <script src='main.js' charset='utf-8'></script>
+  </body>
+</html>

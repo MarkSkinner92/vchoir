@@ -1,0 +1,93 @@
+body{
+  /* position: fixed; */
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  padding: 0px;
+  margin:0px;
+  background-color: #121212;
+  overflow: hidden;
+}
+*{
+  font-family: 'Poppins', sans-serif;
+}
+canvas{
+  background-color: #1f1f1f;
+  border:none;
+  margin:20px;
+  box-shadow: 5px 5px 10px #050505;
+}
+#videoHolder{
+  display: none;
+}
+#vidbar{
+  position: fixed;
+  width:calc(100% - 860px);
+  height:450px;
+  top:20px;
+  right:20px;
+  background-color: #171717;
+  box-shadow: 5px 5px 10px #050505;
+}
+.layer{
+  display: none;
+  position: relative;
+  width:calc(100% - 10px);
+  margin-top:5px;
+  margin-left:5px;
+  background-color: #1f1f1f;
+}
+@media only screen and (max-width: 1010px) {
+    #vidbar {
+        display:none;
+    }
+}
+* :not(button){
+  color:white;
+}
+button{
+  user-select: none;
+}
+.b1{
+  position: relative;
+  top: -3px;
+  background-color: #5adbc6;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.b2{
+  background-color: #a1db5a;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.layertext{
+  user-select: none;
+  margin:5px;
+  margin-bottom: 8px;
+}
+#controls{
+  position: fixed;
+  width:350px;
+  height:calc(100% - 510px);
+  bottom:20px;
+  left:20px;
+  background-color: #171717;
+  box-shadow: 5px 5px 10px #050505;
+}
+#settings{
+  position: fixed;
+  width:calc(100% - 410px);
+  height:calc(100% - 510px);
+  bottom:20px;
+  right:20px;
+  background-color: #171717;
+  box-shadow: 5px 5px 10px #050505;
+}
+@media only screen and (max-height: 600px) {
+    #settings,#controls {
+        display:none;
+    }
+}
