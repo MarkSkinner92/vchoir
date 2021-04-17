@@ -2,18 +2,22 @@ var keys = [];
 class VideoTile {
   constructor(_video) {
     this.video = _video;
-    this.clipPolygon = [new Thumb(0,0),new Thumb(200,0),new Thumb(200,200),new Thumb(0,200),new Thumb(0,100)];
+    this.clipPolygon = [new Thumb(0,0),new Thumb(200,0),new Thumb(200,200),new Thumb(0,200)];
+
     this.infocus = true;
     this.dragingInPolygon = false;
     this.imageOffset = {x:0,y:0};
     this.pos = {x:0,y:0,w:0,h:0};
     this.file = {name:'unnamed'};
     this.layer;
-    console.log(this.video);
     this.scaleFactor = 1;
     this.video.addEventListener('loadeddata', (event) => {
       this.videoIsReady();
     });
+  }
+  deleteThumb(index){
+    if(index >= 0 && index < this.clipPolygon.length && this.clipPolygon.length > 3)
+    this.clipPolygon.splice(index,1);
   }
   videoIsReady(){
     this.pos = {x:0,y:0,w:this.video.videoWidth,h:this.video.videoHeight};
@@ -134,15 +138,19 @@ function insidePolygon(x,y, vs) {
 };
 
 
+
+
+
+
+
 var mouseX,mouseY,mouseDown,oldMouseDown;
 class Thumb {
-  constructor(x,y,parent){
+  constructor(x,y){
     this.x = x;
     this.y = y;
     this.ofx = x;
     this.ofy = y;
     this.isDragging = false;
-    this.parent = parent;
   }
   renderToCanvas(){
     mainCanvas.beginPath();
@@ -166,6 +174,9 @@ class Thumb {
     }
   }
   mouseOver(){
+    return this.over(mouseX,mouseY);
+  }
+  over(){
     return Math.dist(mouseX,mouseY,this.x,this.y) < 10;
   }
   setOffset(){
@@ -182,8 +193,10 @@ function snap(v,l,h){
   if(v > h - 20) v = h;
   return v;
 }
-function getMousePos(evt) {
-    var rect = canvas.getBoundingClientRect();
+function getMousePos(evt,c) {
+    var rect;
+    if(c) rect=c.getBoundingClientRect();
+    else rect = canvas.getBoundingClientRect();
     return {
       x: evt.clientX - rect.left,
       y: evt.clientY - rect.top
@@ -191,32 +204,64 @@ function getMousePos(evt) {
 }
 function listenForMouseEvents(){
   canvas.addEventListener('mousemove',e=>{
-    let c = getMousePos(e);
-    mouseX = c.x;
-    mouseY = c.y;
-  });
-  window.addEventListener('mousemove',e=>{
-    let c = getMousePos(e);
-    window.mouseX = c.x;
-    window.mouseY = c.y;
+    if(e.button == 0){
+      let c = getMousePos(e);
+      mouseX = c.x;
+      mouseY = c.y;
+    }
   });
   canvas.addEventListener('mousedown',e=>{
-    focusWithMouse();
-    let c = getMousePos(e);
-    mouseX = c.x;
-    mouseY = c.y;
-    mouseDown = true;
+    if(e.button == 0){
+      focusWithMouse();
+      let c = getMousePos(e);
+      mouseX = c.x;
+      mouseY = c.y;
+      mouseDown = true;
+    }
   });
   canvas.addEventListener('mouseup',e=>{
-    let c = getMousePos(e);
-    mouseX = c.x;
-    mouseY = c.y;
-    mouseDown = false;
+    if(e.button == 0){
+      let c = getMousePos(e);
+      mouseX = c.x;
+      mouseY = c.y;
+      mouseDown = false;
+    }
   });
   canvas.addEventListener('wheel',function(e){
     for(let i = 0; i < videoArray.length; i++){
       videoArray[i].scroll(e.deltaY);
     }
+  });
+  // document.getElementById('vidbar').addEventListener('mousedown',function(e){
+  //   for(let i = 0; i < videoArray.length; i++){
+  //     videoArray[i].takeFocus(false);
+  //   }
+  //   preventDefault(e);
+  // },true);
+  canvas.addEventListener('contextmenu',e=>{
+    var c = getMousePos(e);
+    videoArray.forEach((vid) => {
+      if(vid.infocus){
+        let onThumb = false;
+        //attemt to delete a thumb
+        vid.clipPolygon.forEach((thumb, k) => {
+          if(thumb.over(c.x,c.y)){
+            vid.deleteThumb(k);
+            onThumb = true;
+          }
+        });
+        if(!onThumb){
+          //attempt to create one
+          for (var i = 0, j = vid.clipPolygon.length - 1; i < vid.clipPolygon.length; j = i++){
+            if(distToSegment(c,vid.clipPolygon[i],vid.clipPolygon[j]) <= 15){
+              vid.clipPolygon.splice(i,0,new Thumb(c.x,c.y));
+              break;
+            }
+          }
+        }
+      }
+    });
+    preventDefault(e);
   });
 }
 function focusWithMouse(){
@@ -239,14 +284,13 @@ function listenForKeyEvents(){
       case 'ArrowDown':
         moveSelectedLayer(-1);
       break;
+      case 'Backspace':
+      case 'Delete':
+        layers.forEach(item => {if(item.infocus) item.delete()});
+      break;
     }
   });
   window.addEventListener('keyup',e=>{
     keys[e.key] = false;
   });
-}
-Math.dist=function(x1,y1,x2,y2){
-  if(!x2) x2=0;
-  if(!y2) y2=0;
-  return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 }

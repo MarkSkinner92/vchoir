@@ -1,8 +1,11 @@
 var mainCanvas, canvas;
 document.addEventListener('DOMContentLoaded', function(){
   startListeningForVideos();
-  canvas = document.getElementById('canvas')
+  canvas = document.getElementById('canvas');
+  barCanvas = document.getElementById('mainSettingsCanvas');
   mainCanvas = canvas.getContext('2d');
+  sctx = barCanvas.getContext('2d');
+  initCanvas();
   listenForMouseEvents();
   listenForKeyEvents();
   draw();

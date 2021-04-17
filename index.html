@@ -22,10 +22,17 @@
       <button class='b2' onclick="pauseAll()">Pause</button>
     </div>
     <div id='settings'>
+      <canvas class='mainSettings' id="mainSettingsCanvas" width="800" height="150"></canvas>
+      <p style="position:absolute; left:5px;margin:0px;top:0px;">Crop video</p>
+      <p style="position:absolute; top:62px;left:5px;margin:0px;">Adjust video start</p>
+      <p style="position:absolute; top:122px;left:5px;margin:0px;">Track volume</p>
+
     </div>
+    <script src='utilities.js' charset='utf-8'></script>
     <script src='Layer.js' charset='utf-8'></script>
     <script src='VideoTile.js' charset='utf-8'></script>
     <script src='loadVideo.js' charset='utf-8'></script>
     <script src='main.js' charset='utf-8'></script>
+    <script src='Bars.js' charset='utf-8'></script>
   </body>
 </html>

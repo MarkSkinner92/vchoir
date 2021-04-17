@@ -12,11 +12,21 @@ body{
 *{
   font-family: 'Poppins', sans-serif;
 }
-canvas{
+.mainVideo{
   background-color: #1f1f1f;
   border:none;
   margin:20px;
   box-shadow: 5px 5px 10px #050505;
+}
+.mainSettings{
+  position: absolute;
+  background-color: #171717;
+  border:none;
+  left:0px;
+  top:0px;
+}
+#settings{
+  padding: 0px;
 }
 #videoHolder{
   display: none;
@@ -29,6 +39,7 @@ canvas{
   right:20px;
   background-color: #171717;
   box-shadow: 5px 5px 10px #050505;
+  overflow-y: auto;
 }
 .layer{
   display: none;
@@ -46,7 +57,7 @@ canvas{
 * :not(button){
   color:white;
 }
-button{
+*{
   user-select: none;
 }
 .b1{
